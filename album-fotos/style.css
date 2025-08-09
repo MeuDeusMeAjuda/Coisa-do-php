@@ -242,6 +242,200 @@ body {
     color: #333;
 }
 
+/* Layout principal com sidebar */
+.main-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+}
+
+.sidebar {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 1.5rem;
+    height: fit-content;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-section h3 {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.category-item {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 12px;
+}
+
+.category-item h4 {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.album-item {
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.album-item a {
+    display: block;
+    padding: 0.75rem;
+    text-decoration: none;
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.album-item:hover a,
+.album-item.active a {
+    background: #667eea;
+    color: white;
+}
+
+.album-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.album-name {
+    font-weight: 500;
+}
+
+.album-count {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.main-content {
+    min-width: 0;
+}
+
+/* Modais */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 2rem;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.close:hover,
+.close:focus {
+    color: #667eea;
+}
+
+/* Ações das fotos */
+.photo-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+/* Compartilhamentos */
+.shares-list {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.share-item {
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 15px;
+    align-items: start;
+}
+
+.share-photo img {
+    width: 100px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.share-link {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.share-link input {
+    flex: 1;
+    font-family: monospace;
+    font-size: 0.9rem;
+}
+
+/* Tokens da API */
+.tokens-list {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.token-item {
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 15px;
+}
+
+/* Backups */
+.backups-list {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.backup-item {
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 15px;
+}
+
+/* Botões pequenos */
+.btn-small {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
     .container {
@@ -259,6 +453,18 @@ body {
         justify-content: center;
     }
     
+    .main-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .sidebar {
+        order: 2;
+    }
+    
+    .main-content {
+        order: 1;
+    }
+    
     .photos-grid {
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         gap: 1rem;
@@ -266,6 +472,15 @@ body {
     
     .card {
         padding: 1.5rem;
+    }
+    
+    .share-item {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .share-photo {
+        justify-self: center;
     }
 }
 
@@ -276,6 +491,12 @@ body {
     
     .card {
         padding: 1rem;
+    }
+    
+    .modal-content {
+        margin: 10% auto;
+        width: 95%;
+        padding: 1.5rem;
     }
 }
 

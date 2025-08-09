@@ -1,0 +1,88 @@
+# Configurações do Apache para o sistema de álbum de fotos
+
+# Habilitar rewrite
+RewriteEngine On
+
+# Redirecionar para HTTPS (opcional)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Proteger arquivos sensíveis
+<Files "config.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "database*.sql">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Configurações de upload
+php_value upload_max_filesize 10M
+php_value post_max_size 10M
+php_value max_execution_time 300
+php_value memory_limit 256M
+
+# Configurações de segurança
+Header always set X-Content-Type-Options nosniff
+Header always set X-Frame-Options DENY
+Header always set X-XSS-Protection "1; mode=block"
+
+# Cache para imagens
+<FilesMatch "\.(jpg|jpeg|png|gif|webp)$">
+    ExpiresActive On
+    ExpiresDefault "access plus 1 month"
+    Header set Cache-Control "public, immutable"
+</FilesMatch>
+
+# Cache para CSS e JS
+<FilesMatch "\.(css|js)$">
+    ExpiresActive On
+    ExpiresDefault "access plus 1 week"
+</FilesMatch>
+
+# Compressão GZIP
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+</IfModule>
+
+# Proteger diretórios de backup
+<Directory "backups">
+    Options -Indexes
+    <Files "*">
+        Order allow,deny
+        Deny from all
+    </Files>
+</Directory>
+
+# Permitir acesso apenas a arquivos de imagem no diretório uploads
+<Directory "uploads">
+    Options -Indexes
+    <FilesMatch "\.(jpg|jpeg|png|gif|webp)$">
+        Order allow,deny
+        Allow from all
+    </FilesMatch>
+    <FilesMatch "^(?!\.(jpg|jpeg|png|gif|webp)$)">
+        Order allow,deny
+        Deny from all
+    </FilesMatch>
+</Directory>
+
+# Roteamento para API REST
+RewriteRule ^api/(.*)$ api/index.php [QSA,L]
+
+# Página 404 personalizada
+ErrorDocument 404 /album-fotos/404.php
+
+# Prevenir acesso direto a arquivos PHP sensíveis
+RewriteCond %{THE_REQUEST} \s/+album-fotos/config\.php[\s?] [NC]
+RewriteRule ^ - [F]
